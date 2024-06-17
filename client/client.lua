@@ -8,7 +8,6 @@ local qual = 0
 local smoke = nil
 local incar = false
 local loop = true
-local duration = 60
 local randomNumber = 15
 local API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
 

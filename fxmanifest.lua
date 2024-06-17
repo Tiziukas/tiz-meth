@@ -23,5 +23,6 @@ shared_scripts {
 
 dependencies {
     'clm_ProgressBar',
-    'ox_lib'
+    'ox_lib',
+    'ox_inventory'
 }
