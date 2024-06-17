@@ -250,13 +250,13 @@ AddEventHandler('tiz-meth:client:startprod', function()
     started = true
 
     Citizen.CreateThread(function()
-        AddTextEntry('msgtiz', '~INPUT_DETONATE~ '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
-        ' \n~INPUT_VEH_HEADLIGHT~ '..Config.Language.decreaseTempMsg ..
-        ' \n~INPUT_PARACHUTE_TURN_LEFT_ONLY~ '..Config.Language.addLithium..' (' .. lithium .. ')' ..
-        ' \n~INPUT_VEH_PUSHBIKE_REAR_BRAKE~ '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
-        ' \n~INPUT_PARACHUTE_TURN_RIGHT_ONLY~ '..Config.Language.addAcid..' (' .. acid .. ')')
         while started do
             Citizen.Wait(0)
+            AddTextEntry('msgtiz', '~INPUT_DETONATE~ '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+            ' \n~INPUT_VEH_HEADLIGHT~ '..Config.Language.decreaseTempMsg ..
+            ' \n~INPUT_PARACHUTE_TURN_LEFT_ONLY~ '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+            ' \n~INPUT_VEH_PUSHBIKE_REAR_BRAKE~ '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+            ' \n~INPUT_PARACHUTE_TURN_RIGHT_ONLY~ '..Config.Language.addAcid..' (' .. acid .. ')')
             if IsPedInVehicle(PlayerPedId(), CurrentVehicle, false) then
                 DisplayHelpTextThisFrame("msgtiz", false)
                 if temp == randomNumber and lithium == Config.lowQualRecipe.lithium and Config.lowQualRecipe.acid == 5 and Config.lowQualRecipe.acetone == 4 then
