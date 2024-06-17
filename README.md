@@ -6,4 +6,4 @@
 * clm_ProgressBar - https://github.com/Daudeuf/clm_ProgressBar
 
 ##  Preview
-* Soon:
+* [Preview](https://streamable.com/4y4l60)
