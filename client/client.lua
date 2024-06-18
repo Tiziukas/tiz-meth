@@ -171,7 +171,7 @@ Citizen.CreateThread(function()
             local progress = 0.0
 
             repeat
-                Citizen.Wait(1000)
+                Citizen.Wait(Config.TickLength)
                 bar_BarTimerBar.Func.lib.BarTimerBar.setProgress(progress)
                 progress = progress + 0.01
             until progress >= 1.0 or not started

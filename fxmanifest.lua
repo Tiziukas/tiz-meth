@@ -21,6 +21,12 @@ shared_scripts {
     'shared/**.lua',
 }
 
+escrow_ignore {
+    'shared/**.lua',
+    'client/client.lua',
+    'server/server.lua'
+}
+
 dependencies {
     'clm_ProgressBar',
     'ox_lib',
