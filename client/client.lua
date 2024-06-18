@@ -9,6 +9,7 @@ local smoke = nil
 local incar = false
 local randomNumber = 15
 local API_ProgressBar
+local cam
 if Config.ProgBar == 'clm' then
     API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
 end
@@ -139,6 +140,7 @@ local function resetValues()
     acid = 0
     qual = 0
     randomNumber = 15
+    lib.hideTextUI()
     FreezeEntityPosition(CurrentVehicle, false)
     StopParticleFxLooped(smoke, 1)
     smoke = nil
@@ -167,9 +169,8 @@ end
 local function CheckItems()
     return lib.callback.await('tiz_meth:server:checkIngredients', false)
 end
-
 lib.onCache('seat', function(seat)
-    if seat == 1 then
+    if seat == -1 then
         incar = CheckCar()
         local hasRequired = CheckItems()
         if incar and hasRequired then
@@ -211,18 +212,17 @@ Citizen.CreateThread(function()
                     label = Config.Language.progBarMsg,
                     useWhileDead = false,
                     canCancel = true,
-                }) then if started then
+                }) then
                     started = false
                     lib.callback.await('tiz-meth:server:FinishThisShit', false, qual)
                     resetValues()
                     lib.hideTextUI()
                     if Config.Debug then print("Timer finished") end 
-                    else
-                        started = false
-                        lib.hideTextUI()
-                        resetValues()
-                        if Config.Debug then print("Operation Cancelled") end
-                    end
+                else
+                    started = false
+                    lib.hideTextUI()
+                    resetValues()
+                    if Config.Debug then print("Operation Cancelled") end
                 end
             end
         end
@@ -230,16 +230,15 @@ Citizen.CreateThread(function()
 end)
 
 -- Function to generate a random number ending in 5 or 0
-local function generateRandomEndingIn5Or0()
+function generateRandomEndingIn5Or0()
     local min, max = 15, 100
-    repeat
+    while true do
         local randomNum = math.random(min, max)
         local remainder = randomNum % 10
-        local adjustedNum = remainder == 0 or remainder == 5 and randomNum or
-            remainder < 5 and randomNum - remainder + 5 or
-            randomNum - remainder + 10
-    until adjustedNum >= min and adjustedNum <= max
-    return adjustedNum
+        if remainder == 0 or remainder == 5 then
+            return randomNum
+        end
+    end
 end
 
 -- Thread to handle random ingredient consumption
@@ -267,7 +266,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
     if not CheckCar() then
         return lib.notify({
             title = Config.Language.notifyTitle,
-            description = 'Wrong Car',
+            description = Config.Language.wrongCar,
             type = 'error'
         })
     end
@@ -305,7 +304,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
                     lib.showTextUI(Config.Language.increaseTemp)
                     qual = 0
                 elseif temp > randomNumber and lithium == 3 and acid == 5 and acetone == 4 then
-                    lib.showTextUI(Config.Language.increaseTemp)
+                    lib.showTextUI(Config.Language.decreaseTemp)
                     qual = 0
                 -- Meth 2
                 elseif temp == randomNumber and lithium == Config.midQualRecipe.lithium and acid == Config.midQualRecipe.acid and acetone == Config.midQualRecipe.acetone then
