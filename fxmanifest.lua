@@ -28,7 +28,6 @@ escrow_ignore {
 }
 
 dependencies {
-    'clm_ProgressBar',
     'ox_lib',
     'ox_inventory'
 }

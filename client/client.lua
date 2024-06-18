@@ -126,7 +126,11 @@ local function resetValues()
     FreezeEntityPosition(CurrentVehicle, false)
     StopParticleFxLooped(smoke, 1)
     smoke = nil
-    API_ProgressBar.clear()
+    if Config.ProgBar == 'ox_lib' then
+        lib.cancelProgress()
+    else
+        API_ProgressBar.clear()
+    end
     if Config.Debug then print("Values reset") end
 end
 
@@ -170,25 +174,45 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(100)
         if started then
-            local bar_BarTimerBar = API_ProgressBar.add("BarTimerBar", Config.Language.progBarMsg)
-            bar_BarTimerBar.Func.lib.BarTimerBar.setForegroundColor({241, 26, 238, 255})
+            if Config.ProgBar == 'clm' then
+                local bar_BarTimerBar = API_ProgressBar.add("BarTimerBar", Config.Language.progBarMsg)
+                bar_BarTimerBar.Func.lib.BarTimerBar.setForegroundColor({241, 26, 238, 255})
 
-            local progress = 0.0
+                local progress = 0.0
 
-            repeat
-                Citizen.Wait(Config.TickLength)
-                bar_BarTimerBar.Func.lib.BarTimerBar.setProgress(progress)
-                progress = progress + 0.01
-            until progress >= 1.0 or not started
+                repeat
+                    Citizen.Wait(Config.TickLength)
+                    bar_BarTimerBar.Func.lib.BarTimerBar.setProgress(progress)
+                    progress = progress + 0.01
+                until progress >= 1.0 or not started
 
-            API_ProgressBar.clear()
+                API_ProgressBar.clear()
 
-            if started then
-                started = false
-                lib.callback.await('tiz-meth:server:FinishThisShit', false, qual)
-                lib.hideTextUI()
-                if Config.Debug then print("Timer finished") end
-                resetValues()
+                if started then
+                    started = false
+                    lib.callback.await('tiz-meth:server:FinishThisShit', false, qual)
+                    lib.hideTextUI()
+                    if Config.Debug then print("Timer finished") end
+                    resetValues()
+                end
+            elseif Config.ProgBar == 'ox_lib' then
+                if lib.progressBar({
+                    duration = 2000,
+                    label = 'Cooking Meth',
+                    useWhileDead = false,
+                    canCancel = true,
+                }) then if started then
+                    started = false
+                    lib.callback.await('tiz-meth:server:FinishThisShit', false, qual)
+                    lib.hideTextUI()
+                    if Config.Debug then print("Timer finished") end
+                    resetValues() 
+                    else
+                        started = false
+                        lib.hideTextUI()
+                        resetValues()
+                    end
+                end
             end
         end
     end

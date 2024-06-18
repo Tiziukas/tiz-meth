@@ -34,6 +34,8 @@ Config.highQualRecipe = {
     acetone = 8
 }
 
+Config.ProgBar = 'clm' -- 'clm' or 'ox_lib'
+
 Config.SmokeColour = 'ent_amb_smoke_foundry_white' -- ent_amb_smoke_foundry_white = White | ent_amb_smoke_foundry = Black | exp_grd_flare = Orange
 
 Config.HowMuchMeth = 20
