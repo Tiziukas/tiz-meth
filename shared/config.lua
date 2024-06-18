@@ -36,11 +36,12 @@ Config.highQualRecipe = {
 
 Config.ProgBar = 'clm' -- 'clm' or 'ox_lib'
 
+Config.ox_libTimer = 30000 -- Configure length if you are using ox_lib above
+Config.TickLength = 1000 -- Only use if you are using the clm progbar | How often 0.01 adds to the progbar | In theory, increasing the tick lenght will make you cook longer.
+
 Config.SmokeColour = 'ent_amb_smoke_foundry_white' -- ent_amb_smoke_foundry_white = White | ent_amb_smoke_foundry = Black | exp_grd_flare = Orange
 
 Config.HowMuchMeth = 20
-
-Config.TickLength = 1000 -- How often 0.01 adds to the progbar | In theory, increasing the tick lenght will make you cook longer.
 
 Config.Particle = { -- https://docs.fivem.net/natives/?_0xE184F4F0DC5910E7
     xRot = 0.0,

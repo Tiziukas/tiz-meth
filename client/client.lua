@@ -162,7 +162,7 @@ Citizen.CreateThread(function()
         while loop do
             Citizen.Wait(1000)
             incar = CheckCar()
-            local hasRequired = CheckItems()
+            local hasRequired = CheckItems() -- I have a feeling this will fuck perfomance, need to test.
             if incar and hasRequired then
                 lib.showTextUI(Config.Language.startCook)
                 Citizen.Wait(2000)
@@ -197,8 +197,8 @@ Citizen.CreateThread(function()
                 end
             elseif Config.ProgBar == 'ox_lib' then
                 if lib.progressBar({
-                    duration = 2000,
-                    label = 'Cooking Meth',
+                    duration = Config.ox_libTimer,
+                    label = Config.Language.progBarMsg,
                     useWhileDead = false,
                     canCancel = true,
                 }) then if started then
