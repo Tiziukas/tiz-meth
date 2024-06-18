@@ -41,6 +41,8 @@ Config.TickLength = 1000 -- Only use if you are using the clm progbar | How ofte
 
 Config.SmokeColour = 'ent_amb_smoke_foundry_white' -- ent_amb_smoke_foundry_white = White | ent_amb_smoke_foundry = Black | exp_grd_flare = Orange
 
+Config.CamEnable = false
+
 Config.HowMuchMeth = 20
 
 Config.Particle = { -- https://docs.fivem.net/natives/?_0xE184F4F0DC5910E7

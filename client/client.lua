@@ -116,7 +116,23 @@ createKeybind('startmeth', 'Start the meth cooking process', 'E', function()
         end
     end
 end)
-
+local function toggleCam(bool) -- Stole This from Daddy Randolio
+    if bool then
+        local coords = GetEntityCoords(cache.ped)
+        local x, y, z = coords.x + GetEntityForwardX(cache.ped) * 0.9, coords.y + GetEntityForwardY(cache.ped) * 0.9, coords.z + 0.92
+        local rot = GetEntityRotation(cache.ped, 2)
+        local camRotation = rot + vec3(0.0, 0.0, 175.0)
+        cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', x, y, z, camRotation, 70.0)
+        SetCamActive(cam, true)
+        RenderScriptCams(true, true, 1000, 1, 1)
+    else
+        if cam then
+            RenderScriptCams(false, true, 0, true, false)
+            DestroyCam(cam, false)
+            cam = nil
+        end
+    end
+end
 -- Function to reset values
 local function resetValues()
     temp = 100
@@ -134,6 +150,9 @@ local function resetValues()
     else
         API_ProgressBar.clear()
     end
+    if Config.CamEnable then
+        toggleCam(false)
+    end
     if Config.Debug then print("Values reset") end
 end
 
@@ -150,7 +169,6 @@ local function CheckCar()
         return false
     end
 end
-
 local function CheckItems()
     return lib.callback.await('tiz_meth:server:checkIngredients', false)
 end
@@ -171,6 +189,20 @@ Citizen.CreateThread(function()
         end
     end
 end)
+
+lib.onCache('seat', function(seat)
+    if seat == 1 then
+        incar = CheckCar()
+        local hasRequired = CheckItems()
+        if incar and hasRequired then
+            lib.showTextUI(Config.Language.startCook)
+            Citizen.Wait(500)
+        end
+    else
+        lib.hideTextUI()
+    end
+end)
+
 
 -- Thread to handle the cooking process
 Citizen.CreateThread(function()
@@ -278,7 +310,9 @@ AddEventHandler('tiz-meth:client:startprod', function()
     FreezeEntityPosition(CurrentVehicle, true)
     lib.callback.await("tiz_meth:server:awaitsmoke", false)
     started = true
-
+    if Config.CamEnable then
+        toggleCam(true)
+    end
     Citizen.CreateThread(function()
         while started do
             Citizen.Wait(0)
