@@ -31,7 +31,7 @@ AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
     loadParticleEffect("core")
     SetPtfxAssetNextCall("core")
     if bool == 'a' then
-        smoke = StartParticleFxLoopedAtCoord("ent_amb_smoke_foundry_white", posx, posy, posz + Config.Particle.posZ, Config.Particle.xRot, Config.Particle.yRot, Config.Particle.zRot, Config.Particle.scale, false, false, false, false)
+        smoke = StartParticleFxLoopedAtCoord(Config.SmokeColour, posx, posy, posz + Config.Particle.posZ, Config.Particle.xRot, Config.Particle.yRot, Config.Particle.zRot, Config.Particle.scale, false, false, false, false)
         SetParticleFxLoopedAlpha(smoke, 0.8)
         SetParticleFxLoopedColour(smoke, 0.0, 0.0, 0.0, 0)
         Citizen.Wait(Config.Length)
