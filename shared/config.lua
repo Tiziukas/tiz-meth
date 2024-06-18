@@ -38,8 +38,6 @@ Config.SmokeColour = 'ent_amb_smoke_foundry_white' -- ent_amb_smoke_foundry_whit
 
 Config.HowMuchMeth = 20
 
-Config.Length = 40000 -- 1000 = 1 second | Can be ignored for now.
-
 Config.TickLength = 1000 -- How often 0.01 adds to the progbar | In theory, increasing the tick lenght will make you cook longer.
 
 Config.Particle = { -- https://docs.fivem.net/natives/?_0xE184F4F0DC5910E7

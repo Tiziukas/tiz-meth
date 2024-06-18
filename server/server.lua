@@ -20,6 +20,16 @@ lib.callback.register('tiz-meth:server:getItemCount', function(source, item)
     if Config.Debug then print("User has: " .. count .. " of item: " .. item) end
     return count
 end)
+lib.callback.register('tiz_meth:server:checkIngredients', function(source)
+    local acetone1 = ox_inventory:GetItemCount(source, Config.ItemNames.acetone)
+    local acid1 = ox_inventory:GetItemCount(source, Config.ItemNames.acid)
+    local lithium = ox_inventory:GetItemCount(source, Config.ItemNames.lithium)
+    if acetone1 >= 1 and acid1 >= 1 and lithium >= 1 then
+        return true
+    else
+        return false
+    end
+end)
 
 -- Callback to remove an item from the player's inventory
 lib.callback.register('tiz-meth:server:removeItem', function(source, item)

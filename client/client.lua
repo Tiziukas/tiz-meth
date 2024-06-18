@@ -34,7 +34,7 @@ AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
         smoke = StartParticleFxLoopedAtCoord(Config.SmokeColour, posx, posy, posz + Config.Particle.posZ, Config.Particle.xRot, Config.Particle.yRot, Config.Particle.zRot, Config.Particle.scale, false, false, false, false)
         SetParticleFxLoopedAlpha(smoke, 0.8)
         SetParticleFxLoopedColour(smoke, 0.0, 0.0, 0.0, 0)
-        Citizen.Wait(Config.Length)
+        Citizen.Wait(22000)
         StopParticleFxLooped(smoke, 0)
     else
         StopParticleFxLooped(smoke, 0)
@@ -144,14 +144,19 @@ local function CheckCar()
     end
 end
 
+local function CheckItems()
+    return lib.callback.await('tiz_meth:server:checkIngredients', false)
+end
+
 -- Thread to display interaction prompt when in the correct car
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1000)
         while loop do
-            Citizen.Wait(300)
+            Citizen.Wait(1000)
             incar = CheckCar()
-            if incar then
+            local hasRequired = CheckItems()
+            if incar and hasRequired then
                 lib.showTextUI(Config.Language.startCook)
                 Citizen.Wait(2000)
                 lib.hideTextUI()
