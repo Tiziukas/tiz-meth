@@ -9,7 +9,10 @@ local smoke = nil
 local incar = false
 local loop = true
 local randomNumber = 15
-local API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
+local API_ProgressBar
+if Config.ProgBar == 'clm' then
+    API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
+end
 
 -- Helper function to load particle effects
 local function loadParticleEffect(asset)
@@ -185,15 +188,12 @@ Citizen.CreateThread(function()
                     bar_BarTimerBar.Func.lib.BarTimerBar.setProgress(progress)
                     progress = progress + 0.01
                 until progress >= 1.0 or not started
-
-                API_ProgressBar.clear()
-
                 if started then
                     started = false
                     lib.callback.await('tiz-meth:server:FinishThisShit', false, qual)
                     lib.hideTextUI()
-                    if Config.Debug then print("Timer finished") end
                     resetValues()
+                    if Config.Debug then print("Timer finished") end
                 end
             elseif Config.ProgBar == 'ox_lib' then
                 if lib.progressBar({
@@ -204,13 +204,14 @@ Citizen.CreateThread(function()
                 }) then if started then
                     started = false
                     lib.callback.await('tiz-meth:server:FinishThisShit', false, qual)
+                    resetValues()
                     lib.hideTextUI()
-                    if Config.Debug then print("Timer finished") end
-                    resetValues() 
+                    if Config.Debug then print("Timer finished") end 
                     else
                         started = false
                         lib.hideTextUI()
                         resetValues()
+                        if Config.Debug then print("Operation Cancelled") end
                     end
                 end
             end
