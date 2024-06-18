@@ -5,5 +5,8 @@
 * ox_inventory - https://github.com/overextended/ox_inventory
 * clm_ProgressBar - https://github.com/Daudeuf/clm_ProgressBar
 
+## Support & Updates
+* [Discord](https://discord.gg/dRxUg2Km)
+
 ##  Preview
 * [Preview](https://streamable.com/4y4l60)
