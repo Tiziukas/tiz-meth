@@ -7,7 +7,6 @@ local acid = 0
 local qual = 0
 local smoke = nil
 local incar = false
-local loop = true
 local randomNumber = 15
 local API_ProgressBar
 if Config.ProgBar == 'clm' then
@@ -108,7 +107,6 @@ end)
 
 createKeybind('startmeth', 'Start the meth cooking process', 'E', function()
     if incar then
-        loop = false
         if not started then
             Wait(300)
             lib.hideTextUI()
@@ -140,7 +138,6 @@ local function resetValues()
     acetone = 0
     acid = 0
     qual = 0
-    loop = true
     randomNumber = 15
     FreezeEntityPosition(CurrentVehicle, false)
     StopParticleFxLooped(smoke, 1)
@@ -172,23 +169,6 @@ end
 local function CheckItems()
     return lib.callback.await('tiz_meth:server:checkIngredients', false)
 end
-
--- Thread to display interaction prompt when in the correct car
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(1000)
-        while loop do
-            Citizen.Wait(1000)
-            incar = CheckCar()
-            local hasRequired = CheckItems() -- I have a feeling this will fuck perfomance, need to test.
-            if incar and hasRequired then
-                lib.showTextUI(Config.Language.startCook)
-                Citizen.Wait(2000)
-                lib.hideTextUI()
-            end
-        end
-    end
-end)
 
 lib.onCache('seat', function(seat)
     if seat == 1 then
