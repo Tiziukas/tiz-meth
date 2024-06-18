@@ -142,9 +142,7 @@ local function resetValues()
     FreezeEntityPosition(CurrentVehicle, false)
     StopParticleFxLooped(smoke, 1)
     smoke = nil
-    if Config.ProgBar == 'ox_lib' then
-        lib.cancelProgress()
-    else
+    if Config.ProgBar == 'clm' then
         API_ProgressBar.clear()
     end
     if Config.CamEnable then
@@ -339,6 +337,9 @@ AddEventHandler('tiz-meth:client:startprod', function()
             else
                 started = false
                 lib.hideTextUI()
+                if Config.ProgBar == 'ox_lib' then
+                    lib.cancelProgress()
+                end
                 resetValues()
             end
         end
