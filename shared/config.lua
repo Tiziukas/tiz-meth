@@ -39,6 +39,8 @@ Config.ProgBar = 'clm' -- 'clm' or 'ox_lib'
 Config.ox_libTimer = 30000 -- Configure length if you are using ox_lib above
 Config.TickLength = 1000 -- Only use if you are using the clm progbar | How often 0.01 adds to the progbar | In theory, increasing the tick lenght will make you cook longer.
 
+Config.HelpText = 'ox_lib' -- 'helptext' or 'ox_lib'
+
 Config.SmokeColour = 'ent_amb_smoke_foundry' -- ent_amb_smoke_foundry_white = White | ent_amb_smoke_foundry = Black | exp_grd_flare = Orange
 
 Config.CamEnable = false -- Enables the camera to see the ped up close.

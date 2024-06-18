@@ -256,87 +256,311 @@ end)
 RegisterNetEvent('tiz-meth:client:startprod')
 AddEventHandler('tiz-meth:client:startprod', function()
     if started then
-        return lib.notify({
+        lib.notify({
             title = Config.Language.notifyTitle,
             description = Config.Language.cookInProg,
             type = 'error'
         })
+        return
     end
 
     if not CheckCar() then
-        return lib.notify({
+        lib.notify({
             title = Config.Language.notifyTitle,
             description = Config.Language.wrongCar,
             type = 'error'
         })
+        return
     end
 
     if IsVehicleSeatFree(CurrentVehicle, 3) then
         SetPedIntoVehicle(PlayerPedId(), CurrentVehicle, 3)
     else
-        return lib.notify({
+        lib.notify({
             title = Config.Language.notifyTitle,
             description = Config.Language.seatOccupied,
             type = 'error'
         })
+        return
     end
 
     FreezeEntityPosition(CurrentVehicle, true)
     lib.callback.await("tiz_meth:server:awaitsmoke", false)
     started = true
+
     if Config.CamEnable then
         toggleCam(true)
     end
+
     Citizen.CreateThread(function()
         while started do
             Citizen.Wait(0)
-            AddTextEntry('msgtiz', '~INPUT_DETONATE~ '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
-            ' \n~INPUT_VEH_HEADLIGHT~ '..Config.Language.decreaseTempMsg ..
-            ' \n~INPUT_PARACHUTE_TURN_LEFT_ONLY~ '..Config.Language.addLithium..' (' .. lithium .. ')' ..
-            ' \n~INPUT_VEH_PUSHBIKE_REAR_BRAKE~ '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
-            ' \n~INPUT_PARACHUTE_TURN_RIGHT_ONLY~ '..Config.Language.addAcid..' (' .. acid .. ')')
-            if IsPedInVehicle(PlayerPedId(), CurrentVehicle, false) then
-                DisplayHelpTextThisFrame("msgtiz", false)
-                if temp == randomNumber and lithium == Config.lowQualRecipe.lithium and Config.lowQualRecipe.acid == 5 and Config.lowQualRecipe.acetone == 4 then
-                    lib.showTextUI(Config.Language.batchStable)
-                    qual = 1
-                elseif temp < randomNumber and lithium == 3 and acid == 5 and acetone == 4 then
-                    lib.showTextUI(Config.Language.increaseTemp)
-                    qual = 0
-                elseif temp > randomNumber and lithium == 3 and acid == 5 and acetone == 4 then
-                    lib.showTextUI(Config.Language.decreaseTemp)
-                    qual = 0
-                -- Meth 2
-                elseif temp == randomNumber and lithium == Config.midQualRecipe.lithium and acid == Config.midQualRecipe.acid and acetone == Config.midQualRecipe.acetone then
-                    lib.showTextUI(Config.Language.batchStable)
-                    qual = 2
-                elseif temp < randomNumber and lithium == 2 and acid == 5 and acetone == 14 then
-                    lib.showTextUI(Config.Language.increaseTemp)
-                    qual = 0
-                elseif temp > randomNumber and lithium == 2 and acid == 5 and acetone == 14 then
-                    lib.showTextUI(Config.Language.decreaseTemp)
-                    qual = 0
-                -- Meth 3
-                elseif temp == randomNumber and lithium == Config.highQualRecipe.lithium and acid == Config.highQualRecipe.acid and acetone == Config.highQualRecipe.acetone then
-                    lib.showTextUI(Config.Language.batchStable)
-                    qual = 3
-                elseif temp < randomNumber and lithium == 4 and acid == 3 and acetone == 8 then
-                    lib.showTextUI(Config.Language.increaseTemp)
-                    qual = 0
-                elseif temp > randomNumber and lithium == 4 and acid == 3 and acetone == 8 then
-                    lib.showTextUI(Config.Language.decreaseTemp)
-                    qual = 0
+
+            if Config.HelpText == 'helptext' then
+                AddTextEntry('msgtiz', '~INPUT_DETONATE~ '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                    ' \n~INPUT_VEH_HEADLIGHT~ '..Config.Language.decreaseTempMsg ..
+                    ' \n~INPUT_PARACHUTE_TURN_LEFT_ONLY~ '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                    ' \n~INPUT_VEH_PUSHBIKE_REAR_BRAKE~ '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                    ' \n~INPUT_PARACHUTE_TURN_RIGHT_ONLY~ '..Config.Language.addAcid..' (' .. acid .. ')')
+
+                if IsPedInVehicle(PlayerPedId(), CurrentVehicle, false) then
+                    DisplayHelpTextThisFrame("msgtiz", false)
+                    
+                    if temp == randomNumber and lithium == Config.lowQualRecipe.lithium and Config.lowQualRecipe.acid == 5 and Config.lowQualRecipe.acetone == 4 then
+                        lib.showTextUI(Config.Language.batchStable)
+                        qual = 1
+                    elseif temp < randomNumber and lithium == 3 and acid == 5 and acetone == 4 then
+                        lib.showTextUI(Config.Language.increaseTemp)
+                        qual = 0
+                    elseif temp > randomNumber and lithium == 3 and acid == 5 and acetone == 4 then
+                        lib.showTextUI(Config.Language.decreaseTemp)
+                        qual = 0
+                    elseif temp == randomNumber and lithium == Config.midQualRecipe.lithium and acid == Config.midQualRecipe.acid and acetone == Config.midQualRecipe.acetone then
+                        lib.showTextUI(Config.Language.batchStable)
+                        qual = 2
+                    elseif temp < randomNumber and lithium == 2 and acid == 5 and acetone == 14 then
+                        lib.showTextUI(Config.Language.increaseTemp)
+                        qual = 0
+                    elseif temp > randomNumber and lithium == 2 and acid == 5 and acetone == 14 then
+                        lib.showTextUI(Config.Language.decreaseTemp)
+                        qual = 0
+                    elseif temp == randomNumber and lithium == Config.highQualRecipe.lithium and acid == Config.highQualRecipe.acid and acetone == Config.highQualRecipe.acetone then
+                        lib.showTextUI(Config.Language.batchStable)
+                        qual = 3
+                    elseif temp < randomNumber and lithium == 4 and acid == 3 and acetone == 8 then
+                        lib.showTextUI(Config.Language.increaseTemp)
+                        qual = 0
+                    elseif temp > randomNumber and lithium == 4 and acid == 3 and acetone == 8 then
+                        lib.showTextUI(Config.Language.decreaseTemp)
+                        qual = 0
+                    else
+                        qual = 0
+                        lib.showTextUI(Config.Language.batchWeird)
+                    end
                 else
-                    qual = 0
-                    lib.showTextUI(Config.Language.batchWeird)
+                    started = false
+                    lib.hideTextUI()
+
+                    if Config.ProgBar == 'ox_lib' then
+                        lib.cancelProgress()
+                    end
+
+                    resetValues()
                 end
-            else
-                started = false
-                lib.hideTextUI()
-                if Config.ProgBar == 'ox_lib' then
-                    lib.cancelProgress()
+            elseif Config.HelpText == 'ox_lib' then
+                if IsPedInVehicle(PlayerPedId(), CurrentVehicle, false) then
+                    DisplayHelpTextThisFrame("msgtiz", false)
+                    
+                    if temp == randomNumber and lithium == Config.lowQualRecipe.lithium and Config.lowQualRecipe.acid == 5 and Config.lowQualRecipe.acetone == 4 then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.batchStable,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 1
+                    elseif temp < randomNumber and lithium == 3 and acid == 5 and acetone == 4 then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.increaseTemp,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 0
+                    elseif temp > randomNumber and lithium == 3 and acid == 5 and acetone == 4 then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.decreaseTemp,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 0
+                    elseif temp == randomNumber and lithium == Config.midQualRecipe.lithium and acid == Config.midQualRecipe.acid and acetone == Config.midQualRecipe.acetone then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.batchStable,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 2
+                    elseif temp < randomNumber and lithium == 2 and acid == 5 and acetone == 14 then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.increaseTemp,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 0
+                    elseif temp > randomNumber and lithium == 2 and acid == 5 and acetone == 14 then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.decreaseTemp,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 0
+                    elseif temp == randomNumber and lithium == Config.highQualRecipe.lithium and acid == Config.highQualRecipe.acid and acetone == Config.highQualRecipe.acetone then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.batchStable,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 3
+                    elseif temp < randomNumber and lithium == 4 and acid == 3 and acetone == 8 then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.increaseTemp,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 0
+                    elseif temp > randomNumber and lithium == 4 and acid == 3 and acetone == 8 then
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.decreaseTemp,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                        qual = 0
+                    else
+                        qual = 0
+                        lib.showTextUI('[G]  '..Config.Language.increaseTempMsg..' (' .. temp .. '%)' ..
+                        '                                           \n'..'[H]  '..Config.Language.decreaseTempMsg ..
+                        '                                           \n'..'[A]  '..Config.Language.addLithium..' (' .. lithium .. ')' ..
+                        '                                           \n'..'[S]  '..Config.Language.addAcetone..' (' .. acetone .. ')' ..
+                        '                                           \n'..'[D]  '..Config.Language.addAcid..' (' .. acid .. ')' ..
+                        '                                           \n'..
+                        '                                           \n'.. Config.Language.batchWeird,
+                        {
+                            position = 'right-center',
+                            icon = 'fa-solid fa-syringe',
+                            iconColor = 'white',
+                            style = {
+                                borderRadius = '8px',
+                                backgroundColor = '#212121',
+                                color = '#FFFFFF',           
+                                padding = '8px',
+                            }
+                        })
+                    end
+                else
+                    started = false
+                    lib.hideTextUI()
+
+                    if Config.ProgBar == 'ox_lib' then
+                        lib.cancelProgress()
+                    end
+                    resetValues()
                 end
-                resetValues()
             end
         end
     end)
