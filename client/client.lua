@@ -232,17 +232,14 @@ end)
 -- Function to generate a random number ending in 5 or 0
 local function generateRandomEndingIn5Or0()
     local min, max = 15, 100
-    while true do
+    repeat
         local randomNum = math.random(min, max)
         local remainder = randomNum % 10
         local adjustedNum = remainder == 0 or remainder == 5 and randomNum or
             remainder < 5 and randomNum - remainder + 5 or
             randomNum - remainder + 10
-
-        if adjustedNum >= min and adjustedNum <= max then
-            return adjustedNum
-        end
-    end
+    until adjustedNum >= min and adjustedNum <= max
+    return adjustedNum
 end
 
 -- Thread to handle random ingredient consumption
