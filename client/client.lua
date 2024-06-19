@@ -359,7 +359,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
                     started = false
                     lib.hideTextUI()
 
-                    if Config.ProgBar == 'ox_lib' then
+                    if Config.ProgBar == 'ox_bar' or Config.ProgBar == 'ox_circle' then
                         lib.cancelProgress()
                     end
 
@@ -574,7 +574,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
                     started = false
                     lib.hideTextUI()
 
-                    if Config.ProgBar == 'ox_lib' then
+                    if Config.ProgBar == 'ox_bar' or Config.ProgBar == 'ox_circle' then
                         lib.cancelProgress()
                     end
                     resetValues()
