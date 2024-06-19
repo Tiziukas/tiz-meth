@@ -1,0 +1,33 @@
+*INSERT THIS IN ox_inventory/data/items.lua*
+
+
+    ['sacid'] = {
+        label = 'Acid',
+        weight = 5,
+        stack = true
+    },
+    ['acetone'] = {
+        label = 'Acetone',
+        weight = 5,
+        stack = true
+    },
+    ['lithium'] = {
+        label = 'Lithium',
+        weight = 5,
+        stack = true
+    },
+    ['meth1'] = {
+        label = 'Meth 1',
+        weight = 15,
+        stack = true
+    },
+    ['meth2'] = {
+        label = 'Meth 2',
+        weight = 15,
+        stack = true
+    },
+    ['meth3'] = {
+        label = 'Meth 3',
+        weight = 15,
+        stack = true
+    },

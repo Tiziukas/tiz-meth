@@ -47,7 +47,7 @@ Config.CamEnable = false -- Enables the camera to see the ped up close.
 
 Config.HowMuchMeth = 20
 
-Config.Particle = { -- https://docs.fivem.net/natives/?_0xE184F4F0DC5910E7
+Config.Particle = { -- https://docs.fivem.net/natives/?_0xE184F4F0DC5910E7 | You may need to change these values if you use a different vehicle.
     xRot = 0.0,
     yRot = 0.0,
     zRot = 0.0,
