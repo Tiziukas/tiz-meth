@@ -34,6 +34,8 @@ Config.highQualRecipe = {
     acetone = 8
 }
 
+Config.Inventory = 'ox' -- 'ox' = ox_inventory | 'qs' = qs-inventory | 'qb' = qb_inventory
+
 Config.ProgBar = 'clm' -- 'clm' or 'ox_lib'
 
 Config.ox_libTimer = 30000 -- Configure length if you are using ox_lib above

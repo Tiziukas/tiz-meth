@@ -1,7 +1,5 @@
-local ox_inventory = exports.ox_inventory
-
 lib.callback.register('tiz_meth:server:cookthisbitchup', function(source)
-    if ox_inventory:GetItemCount(source, 'acetone') >= 1 and ox_inventory:GetItemCount(source, 'sacid') >= 1 and ox_inventory:GetItemCount(source, 'lithium') >=1 then
+    if GetItemCount(source, 'acetone') >= 1 and GetItemCount(source, 'sacid') >= 1 and GetItemCount(source, 'lithium') >=1 then
         TriggerClientEvent('tiz-meth:client:startprod', source)
         
         if Config.Debug then print("Production Started") end
@@ -16,14 +14,14 @@ end)
 
 -- Callback to get item count from the player's inventory
 lib.callback.register('tiz-meth:server:getItemCount', function(source, item)
-    local count = ox_inventory:GetItemCount(source, item)
+    local count = GetItemCount(source, item)
     if Config.Debug then print("User has: " .. count .. " of item: " .. item) end
     return count
 end)
 lib.callback.register('tiz_meth:server:checkIngredients', function(source)
-    local acetone1 = ox_inventory:GetItemCount(source, Config.ItemNames.acetone)
-    local acid1 = ox_inventory:GetItemCount(source, Config.ItemNames.acid)
-    local lithium = ox_inventory:GetItemCount(source, Config.ItemNames.lithium)
+    local acetone1 = GetItemCount(source, Config.ItemNames.acetone)
+    local acid1 = GetItemCount(source, Config.ItemNames.acid)
+    local lithium = GetItemCount(source, Config.ItemNames.lithium)
     if acetone1 >= 1 and acid1 >= 1 and lithium >= 1 then
         return true
     else
@@ -33,7 +31,7 @@ end)
 
 -- Callback to remove an item from the player's inventory
 lib.callback.register('tiz-meth:server:removeItem', function(source, item)
-    ox_inventory:RemoveItem(source, item, 1)
+    RemoveItem(source, item, 1)
     if Config.Debug then print("Removed item: " .. item) end
     return true
 end)
@@ -63,6 +61,6 @@ lib.callback.register('tiz-meth:server:FinishThisShit', function(source, qual)
         })
     end
     -- Add the meth to the player's inventory
-    ox_inventory:AddItem(source, methName, Config.HowMuchMeth)
+    AddItem(source, methName, Config.HowMuchMeth)
     if Config.Debug then print("Added meth of quality: " .. qual) end
 end)
