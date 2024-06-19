@@ -206,8 +206,26 @@ Citizen.CreateThread(function()
                     resetValues()
                     if Config.Debug then print("Timer finished") end
                 end
-            elseif Config.ProgBar == 'ox_lib' then
+            elseif Config.ProgBar == 'ox_bar' then
                 if lib.progressBar({
+                    duration = Config.ox_libTimer,
+                    label = Config.Language.progBarMsg,
+                    useWhileDead = false,
+                    canCancel = true,
+                }) then
+                    started = false
+                    lib.callback.await('tiz-meth:server:FinishThisShit', false, qual)
+                    resetValues()
+                    lib.hideTextUI()
+                    if Config.Debug then print("Timer finished") end 
+                else
+                    started = false
+                    lib.hideTextUI()
+                    resetValues()
+                    if Config.Debug then print("Operation Cancelled") end
+                end
+            elseif Config.ProgBar == 'ox_circle' then
+                if lib.progressCircle({
                     duration = Config.ox_libTimer,
                     label = Config.Language.progBarMsg,
                     useWhileDead = false,
