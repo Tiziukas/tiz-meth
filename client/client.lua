@@ -144,6 +144,9 @@ local function resetValues()
     FreezeEntityPosition(CurrentVehicle, false)
     StopParticleFxLooped(smoke, 1)
     smoke = nil
+    if IsVehicleSeatFree(CurrentVehicle, -1) then
+        SetPedIntoVehicle(PlayerPedId(), CurrentVehicle, -1)
+    end
     if Config.ProgBar == 'clm' then
         API_ProgressBar.clear()
     end
