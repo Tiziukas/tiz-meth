@@ -45,6 +45,9 @@ Config.DispatchBlip = {
     radius = 0
 }
 
+Config.PutOnGasMask = true
+Config.GasMaskNumber = 46
+
 Config.Inventory = 'ox' -- 'ox' = ox_inventory | 'qs' = qs-inventory | 'qb' = qb_inventory
 
 Config.ProgBar = 'clm' -- 'clm' or 'ox_bar' or 'ox_circle'

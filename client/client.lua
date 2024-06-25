@@ -150,6 +150,9 @@ local function resetValues()
     if Config.ProgBar == 'clm' then
         API_ProgressBar.clear()
     end
+    if Config.PutOnGasMask then
+        UseGasMask(false)
+    end
     if Config.CamEnable then
         toggleCam(false)
     end
@@ -310,6 +313,9 @@ AddEventHandler('tiz-meth:client:startprod', function()
     started = true
     if Config.Dispatch == true then
         CallDispatch()
+    end
+    if Config.Config.PutOnGasMask then
+        UseGasMask(true)
     end
     if Config.CamEnable then
         toggleCam(true)

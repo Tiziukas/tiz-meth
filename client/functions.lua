@@ -68,3 +68,19 @@ function CallDispatch()
         --        
     end
 end
+
+
+function UseGasMask(var)
+    local animdict = 'mp_masks@on_foot'
+    local animname = 'put_on_mask'
+    local playerped = PlayerPedId()
+    lib.requestAnimDict(animdict, 1000)
+    TaskPlayAnim(playerped, animdict, animname, 8.0, -8.0, -1, 0, 0, false, false, false)
+    RemoveAnimDict(animdict)
+    Wait(260)
+    if var then
+        SetPedComponentVariation(playerped, 1, Config.GasMaskNumber, 0, 1)
+    else
+        SetPedComponentVariation(playerped, 1, 0, 0, 1)
+    end
+end
