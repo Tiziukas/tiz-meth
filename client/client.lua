@@ -308,28 +308,9 @@ AddEventHandler('tiz-meth:client:startprod', function()
     FreezeEntityPosition(CurrentVehicle, true)
     lib.callback.await("tiz_meth:server:awaitsmoke", false)
     started = true
-    if Config.Dispatch == 'cd_dispatch' then
-        local data = exports['cd_dispatch']:GetPlayerInfo()
-        TriggerServerEvent('cd_dispatch:AddNotification', {
-            job_table = {Config.PoliceJob}, 
-            coords = data.coords,
-            title = Config.Language.methProduction,
-            message = 'A '..data.sex..Config.Language.methProduction..' at '..data.street, 
-            flash = 0,
-            unique_id = data.unique_id,
-            sound = 1,
-            blip = {
-                sprite = Config.DispatchBlip.sprite,
-                scale = Config.DispatchBlip.scale,
-                colour = Config.DispatchBlip.colour,
-                flashes = Config.DispatchBlip.flashes, 
-                text = Config.Language.blipText,
-                time = Config.DispatchBlip.time,
-                radius = Config.DispatchBlip.radius
-            }
-        })
+    if Config.Dispatch == true then
+        CallDispatch()
     end
-
     if Config.CamEnable then
         toggleCam(true)
     end

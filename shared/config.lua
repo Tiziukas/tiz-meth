@@ -34,8 +34,8 @@ Config.highQualRecipe = {
     acetone = 8
 }
 
-Config.Dispatch = 'cd_dispatch'
-Config.PoliceJob = 'police'
+Config.Dispatch = true -- cd_dispatch | rcore_dispatch | qs-dispatch are all automatically found else integrate your own in functions.lua
+Config.PoliceJob = {'police', 'penis'}
 Config.DispatchBlip = {
     sprite = 431,
     scale = 1.2,

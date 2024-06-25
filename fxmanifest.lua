@@ -10,7 +10,8 @@ version '1.0.0'
 lua54 'yes'
 
 client_scripts {
-    'client/client.lua'
+    'client/client.lua',
+    'client/functions.lua'
 }
 server_script {
     'server/server.lua',
