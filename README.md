@@ -5,7 +5,9 @@
 
 ## Optional
 * clm_ProgressBar - https://github.com/Daudeuf/clm_ProgressBar
-* Supports ox_inventory, qs-inventory, qb-inventory.
+* Supports:
+- ox_inventory, qs-inventory, qb-inventory.
+- cd_dispatch, rcore_dispatch, qs-dispatch.
 
 ## Support & Updates
 * [Discord](https://discord.gg/dRxUg2Km)
