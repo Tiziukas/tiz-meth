@@ -34,6 +34,17 @@ Config.highQualRecipe = {
     acetone = 8
 }
 
+Config.Dispatch = 'cd_dispatch'
+Config.PoliceJob = 'police'
+Config.DispatchBlip = {
+    sprite = 431,
+    scale = 1.2,
+    colour = 3,
+    flashes = false,
+    time = 5,
+    radius = 0
+}
+
 Config.Inventory = 'ox' -- 'ox' = ox_inventory | 'qs' = qs-inventory | 'qb' = qb_inventory
 
 Config.ProgBar = 'clm' -- 'clm' or 'ox_bar' or 'ox_circle'
@@ -58,6 +69,8 @@ Config.Particle = { -- https://docs.fivem.net/natives/?_0xE184F4F0DC5910E7 | You
 }
 
 Config.Language = {
+    blipText = 'Someone cooking',
+    methProduction = ' started cooking something strange!', -- Client L317 to change completely
     noLithium = 'You do not have lithium!',
     noAcetone = 'You do not have acetone!',
     noAcid = 'You do not have acid!',
