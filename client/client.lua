@@ -314,7 +314,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
     if Config.Dispatch == true then
         CallDispatch()
     end
-    if Config.Config.PutOnGasMask then
+    if Config.PutOnGasMask then
         UseGasMask(true)
     end
     if Config.CamEnable then
