@@ -36,11 +36,7 @@ lib.callback.register('tiz-meth:server:removeItem', function(source, item)
     return true
 end)
 lib.callback.register('tiz_meth:server:awaitsmoke', function(source, pos)
-    local xPlayers = GetPlayers()
-    for i = 1, #xPlayers do
-        TriggerClientEvent('tiz_meth:client:smoke', xPlayers[i], pos.x, pos.y, pos.z, 'a')
-    end
-    return true
+    return TriggerClientEvent('tiz_meth:client:smoke', -1, pos.x, pos.y, pos.z, 'a')
 end)
 
 -- Callback to finish the production and give the player the resulting meth
