@@ -24,9 +24,6 @@ local function loadParticleEffect(asset)
     end
 end
 
-lib.callback.register('tiz_meth:client:getpos', function()
-    return GetEntityCoords(PlayerPedId())
-end)
 
 -- Event to handle smoke particle effect
 RegisterNetEvent('tiz_meth:client:smoke')
@@ -309,7 +306,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
     end
 
     FreezeEntityPosition(CurrentVehicle, true)
-    lib.callback.await("tiz_meth:server:awaitsmoke", false)
+    lib.callback.await("tiz_meth:server:awaitsmoke", false, GetEntityCoords(PlayerPedId()))
     started = true
     if Config.Dispatch == true then
         CallDispatch()

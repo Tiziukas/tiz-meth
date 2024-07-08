@@ -35,9 +35,8 @@ lib.callback.register('tiz-meth:server:removeItem', function(source, item)
     if Config.Debug then print("Removed item: " .. item) end
     return true
 end)
-lib.callback.register('tiz_meth:server:awaitsmoke', function(source)
+lib.callback.register('tiz_meth:server:awaitsmoke', function(source, pos)
     local xPlayers = GetPlayers()
-    local pos = lib.callback.await('tiz_meth:client:getpos', source)
     for i = 1, #xPlayers do
         TriggerClientEvent('tiz_meth:client:smoke', xPlayers[i], pos.x, pos.y, pos.z, 'a')
     end
