@@ -1,10 +1,9 @@
 lib.callback.register('tiz_meth:server:cookthisbitchup', function(source)
     if GetItemCount(source, 'acetone') >= 1 and GetItemCount(source, 'sacid') >= 1 and GetItemCount(source, 'lithium') >=1 then
-        TriggerClientEvent('tiz-meth:client:startprod', source)
-        
         if Config.Debug then print("Production Started") end
+        return TriggerClientEvent('tiz-meth:client:startprod', source)
     else
-        TriggerClientEvent('ox_lib:notify', source, {
+        return TriggerClientEvent('ox_lib:notify', source, {
             title = Config.Language.notifyTitle,
             description = Config.Language.wrongIngredients,
             type = 'error'
@@ -31,12 +30,15 @@ end)
 
 -- Callback to remove an item from the player's inventory
 lib.callback.register('tiz-meth:server:removeItem', function(source, item)
-    RemoveItem(source, item, 1)
     if Config.Debug then print("Removed item: " .. item) end
-    return true
+    return RemoveItem(source, item, 1)
 end)
-lib.callback.register('tiz_meth:server:awaitsmoke', function(source, pos)
-    return TriggerClientEvent('tiz_meth:client:smoke', -1, pos.x, pos.y, pos.z, 'a')
+lib.callback.register('tiz_meth:server:awaitsmoke', function(source, pos, var)
+    if var then
+        return TriggerClientEvent('tiz_meth:client:smoke', -1, pos.x, pos.y, pos.z, 'a')
+    else
+        return TriggerClientEvent('tiz_meth:client:smoke', -1, pos.x, pos.y, pos.z, var)
+    end
 end)
 
 -- Callback to finish the production and give the player the resulting meth
@@ -49,13 +51,13 @@ lib.callback.register('tiz-meth:server:FinishThisShit', function(source, qual)
     elseif qual == 3 then
         methName = Config.MethNames.highqual
     else
-        return  TriggerClientEvent('ox_lib:notify', source, {
+        return TriggerClientEvent('ox_lib:notify', source, {
             title = Config.Language.notifyTitle,
             description = Config.Language.batchMessed,
             type = 'error'
         })
     end
     -- Add the meth to the player's inventory
-    AddItem(source, methName, Config.HowMuchMeth)
     if Config.Debug then print("Added meth of quality: " .. qual) end
+    return AddItem(source, methName, Config.HowMuchMeth)
 end)

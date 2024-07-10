@@ -52,7 +52,7 @@ Config.Inventory = 'ox' -- 'ox' = ox_inventory | 'qs' = qs-inventory | 'qb' = qb
 
 Config.ProgBar = 'clm' -- 'clm' or 'ox_bar' or 'ox_circle'
 
-Config.ox_libTimer = 30000 -- Configure length if you are using ox_lib above
+Config.ox_libTimer = 60000 -- Configure length if you are using ox_lib above
 Config.TickLength = 1000 -- Only use if you are using the clm progbar | How often 0.01 adds to the progbar | In theory, increasing the tick lenght will make you cook longer.
 
 Config.HelpText = 'ox_lib' -- 'helptext' or 'ox_lib'

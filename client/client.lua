@@ -9,47 +9,25 @@ local smoke = nil
 local incar = false
 local randomNumber = 15
 local API_ProgressBar
-local cam
+
 if Config.ProgBar == 'clm' then
     API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
 end
 
--- Helper function to load particle effects
-local function loadParticleEffect(asset)
-    if not HasNamedPtfxAssetLoaded(asset) then
-        RequestNamedPtfxAsset(asset)
-        while not HasNamedPtfxAssetLoaded(asset) do
-            Citizen.Wait(1)
-        end
-    end
-end
-
-
--- Event to handle smoke particle effect
 RegisterNetEvent('tiz_meth:client:smoke')
 AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
     loadParticleEffect("core")
     SetPtfxAssetNextCall("core")
-    if bool == 'a' then
+    if bool then
         smoke = StartParticleFxLoopedAtCoord(Config.SmokeColour, posx, posy, posz + Config.Particle.posZ, Config.Particle.xRot, Config.Particle.yRot, Config.Particle.zRot, Config.Particle.scale, false, false, false, false)
         SetParticleFxLoopedAlpha(smoke, 0.8)
         SetParticleFxLoopedColour(smoke, 0.0, 0.0, 0.0, 0)
-        Citizen.Wait(22000)
+        Citizen.Wait(Config.ox_libTimer)
         StopParticleFxLooped(smoke, 0)
     else
         StopParticleFxLooped(smoke, 0)
     end
 end)
-
--- Helper function to create keybinds
-local function createKeybind(name, description, defaultKey, callback)
-    return lib.addKeybind({
-        name = name,
-        description = description,
-        defaultKey = defaultKey,
-        onPressed = callback
-    })
-end
 
 -- Keybinds for adding ingredients and adjusting temperature
 createKeybind('lithium', 'Add Lithium', 'A', function()
@@ -112,66 +90,7 @@ createKeybind('startmeth', 'Start the meth cooking process', 'E', function()
         end
     end
 end)
-local function toggleCam(bool) -- Stole This from Daddy Randolio
-    if bool then
-        local coords = GetEntityCoords(cache.ped)
-        local x, y, z = coords.x + GetEntityForwardX(cache.ped) * 0.9, coords.y + GetEntityForwardY(cache.ped) * 0.9, coords.z + 0.92
-        local rot = GetEntityRotation(cache.ped, 2)
-        local camRotation = rot + vec3(0.0, 0.0, 175.0)
-        cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', x, y, z, camRotation, 70.0)
-        SetCamActive(cam, true)
-        RenderScriptCams(true, true, 1000, 1, 1)
-    else
-        if cam then
-            RenderScriptCams(false, true, 0, true, false)
-            DestroyCam(cam, false)
-            cam = nil
-        end
-    end
-end
--- Function to reset values
-local function resetValues()
-    temp = 100
-    lithium = 0
-    acetone = 0
-    acid = 0
-    qual = 0
-    randomNumber = 15
-    lib.hideTextUI()
-    FreezeEntityPosition(CurrentVehicle, false)
-    StopParticleFxLooped(smoke, 1)
-    smoke = nil
-    if IsVehicleSeatFree(CurrentVehicle, -1) then
-        SetPedIntoVehicle(PlayerPedId(), CurrentVehicle, -1)
-    end
-    if Config.ProgBar == 'clm' then
-        API_ProgressBar.clear()
-    end
-    if Config.PutOnGasMask then
-        UseGasMask(false)
-    end
-    if Config.CamEnable then
-        toggleCam(false)
-    end
-    if Config.Debug then print("Values reset") end
-end
 
--- Function to check if the current vehicle is the correct one
-local function CheckCar()
-    CurrentVehicle = GetVehiclePedIsUsing(PlayerPedId())
-    local model = GetEntityModel(CurrentVehicle)
-    local modelName = GetDisplayNameFromVehicleModel(model)
-    if modelName == Config.CarModel then
-        if Config.Debug then print("Car correct: " .. modelName) end
-        return true
-    else
-        if Config.Debug then print("Car incorrect") end
-        return false
-    end
-end
-local function CheckItems()
-    return lib.callback.await('tiz_meth:server:checkIngredients', false)
-end
 lib.onCache('seat', function(seat)
     if seat == -1 then
         incar = CheckCar()
@@ -250,18 +169,6 @@ Citizen.CreateThread(function()
     end
 end)
 
--- Function to generate a random number ending in 5 or 0
-function generateRandomEndingIn5Or0()
-    local min, max = 15, 100
-    while true do
-        local randomNum = math.random(min, max)
-        local remainder = randomNum % 10
-        if remainder == 0 or remainder == 5 then
-            return randomNum
-        end
-    end
-end
-
 -- Thread to handle random ingredient consumption
 Citizen.CreateThread(function()
     while true do
@@ -306,7 +213,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
     end
 
     FreezeEntityPosition(CurrentVehicle, true)
-    lib.callback.await("tiz_meth:server:awaitsmoke", false, GetEntityCoords(PlayerPedId()))
+    lib.callback.await("tiz_meth:server:awaitsmoke", false, GetEntityCoords(PlayerPedId()), true)
     started = true
     if Config.Dispatch == true then
         CallDispatch()
