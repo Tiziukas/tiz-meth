@@ -227,7 +227,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
     Citizen.CreateThread(function()
         while true do
             Citizen.Wait(10)
-            if qual == 0 then
+            if qual == 0 and started then
                 local blowme = 0.0
                 repeat
                     Citizen.Wait(500)
