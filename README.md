@@ -10,7 +10,7 @@
 <sub> cd_dispatch, rcore_dispatch, qs-dispatch.</sub>
 
 ## Support & Updates
-* [Discord](https://discord.gg/dRxUg2Km)
+* [Discord](https://discord.gg/rhAuzZ5K)
 
 ##  Preview
 * [Preview](https://streamable.com/4y4l60)
