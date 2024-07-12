@@ -224,7 +224,21 @@ AddEventHandler('tiz-meth:client:startprod', function()
     if Config.CamEnable then
         toggleCam(true)
     end
-
+    Citizen.CreateThread(function()
+        while true do
+            Citizen.Wait(10)
+            if qual == 0 then
+                local blowme = 0.0
+                repeat
+                    Citizen.Wait(500)
+                    blowme = blowme + 0.1
+                until blowme >= 1.0 or qual ~= 0
+                if blowme >= 1.0 then
+                    ExplodeVehicle(CurrentVehicle, true, true)
+                end
+            end
+        end
+    end)
     Citizen.CreateThread(function()
         while started do
             Citizen.Wait(0)

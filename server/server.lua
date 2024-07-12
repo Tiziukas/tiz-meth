@@ -43,6 +43,7 @@ end)
 
 -- Callback to finish the production and give the player the resulting meth
 lib.callback.register('tiz-meth:server:FinishThisShit', function(source, qual)
+    if qual ~= 1 and qual ~= 2 and qual ~= 3 then return DropPlayer(source, 'Executor') end
     local methName
     if qual == 1 then
         methName = Config.MethNames.lowqual
