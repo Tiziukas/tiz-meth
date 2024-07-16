@@ -2,7 +2,12 @@ Config = {}
 
 Config.CarModel = 'JOURNEY' -- May not work with all vehicles, I think it pulls this from maybe vehicle.meta ??
 
-Config.OnlyAllowedZones = true -- Change to true to enable checking the zone where the Journey is while cooking meth. | DONT FORGET TO ADD YOUR ZONES ON LINE 103
+Config.OnlyAllowedZones = true -- Change to true to enable checking the zone where the Journey is while cooking meth.
+Config.AllowedZones = { -- https://docs.fivem.net/natives/?_0xCD90657D4C30E1CA | You may want to add your zones since these ones are just examples.
+    "AIRP",
+    "ALAMO",
+    "ALTA"
+}
 
 Config.Debug = false
 
@@ -98,10 +103,4 @@ Config.Language = {
     addAcid = 'Add sulfuric acid',
     zoneErrorTitle = 'You cant do that here',
     zoneErrorDescription = 'Move somewhere more private to start cooking'
-}
-
-Config.AllowedZones = { -- https://docs.fivem.net/natives/?_0xCD90657D4C30E1CA | You may want to add your zones since these ones are just examples.
-    "AIRP",
-    "ALAMO",
-    "ALTA"
 }
