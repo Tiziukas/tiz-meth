@@ -13,7 +13,14 @@ local API_ProgressBar
 if Config.ProgBar == 'clm' then
     API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
 end
-
+local function loadParticleEffect(asset)
+    if not HasNamedPtfxAssetLoaded(asset) then
+        RequestNamedPtfxAsset(asset)
+        while not HasNamedPtfxAssetLoaded(asset) do
+            Citizen.Wait(1)
+        end
+    end
+end
 RegisterNetEvent('tiz_meth:client:smoke')
 AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
     loadParticleEffect("core")
@@ -28,7 +35,105 @@ AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
         StopParticleFxLooped(smoke, 0)
     end
 end)
+local function resetValues()
+    temp = 100
+    lithium = 0
+    acetone = 0
+    acid = 0
+    qual = 0
+    randomNumber = 15
+    lib.hideTextUI()
+    FreezeEntityPosition(CurrentVehicle, false)
+    lib.callback.await("tiz_meth:server:awaitsmoke", false, GetEntityCoords(PlayerPedId()), false)
+    smoke = nil
+    if IsVehicleSeatFree(CurrentVehicle, -1) then
+        SetPedIntoVehicle(PlayerPedId(), CurrentVehicle, -1)
+    end
+    if Config.ProgBar == 'clm' then
+        API_ProgressBar.clear()
+    end
+    if Config.PutOnGasMask then
+        UseGasMask(false)
+    end
+    if Config.CamEnable then
+        toggleCam(false)
+    end
+    if Config.Debug then print("Values reset") end
+end
 
+-- Helper function to create keybinds
+local function createKeybind(name, description, defaultKey, callback)
+    return lib.addKeybind({
+        name = name,
+        description = description,
+        defaultKey = defaultKey,
+        onPressed = callback
+    })
+end
+
+local cam 
+local function toggleCam(bool) -- Stole This from Daddy Randolio
+    if bool then
+        local coords = GetEntityCoords(cache.ped)
+        local x, y, z = coords.x + GetEntityForwardX(cache.ped) * 0.9, coords.y + GetEntityForwardY(cache.ped) * 0.9, coords.z + 0.92
+        local rot = GetEntityRotation(cache.ped, 2)
+        local camRotation = rot + vec3(0.0, 0.0, 175.0)
+        cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', x, y, z, camRotation, 70.0)
+        SetCamActive(cam, true)
+        RenderScriptCams(true, true, 1000, 1, 1)
+    else
+        if cam then
+            RenderScriptCams(false, true, 0, true, false)
+            DestroyCam(cam, false)
+            cam = nil
+        end
+    end
+end
+
+local function UseGasMask(var)
+    local animdict = 'mp_masks@on_foot'
+    local animname = 'put_on_mask'
+    local playerped = PlayerPedId()
+    lib.requestAnimDict(animdict, 1000)
+    TaskPlayAnim(playerped, animdict, animname, 8.0, -8.0, -1, 0, 0, false, false, false)
+    RemoveAnimDict(animdict)
+    Wait(260)
+    if var then
+        SetPedComponentVariation(playerped, 1, Config.GasMaskNumber, 0, 1)
+    else
+        SetPedComponentVariation(playerped, 1, 0, 0, 1)
+    end
+end
+
+-- Function to generate a random number ending in 5 or 0
+
+local function generateRandomEndingIn5Or0()
+    local min, max = 15, 100
+    while true do
+        local randomNum = math.random(min, max)
+        local remainder = randomNum % 10
+        if remainder == 0 or remainder == 5 then
+            return randomNum
+        end
+    end
+end
+
+local function CheckCar()
+    CurrentVehicle = GetVehiclePedIsUsing(PlayerPedId())
+    local model = GetEntityModel(CurrentVehicle)
+    local modelName = GetDisplayNameFromVehicleModel(model)
+    if modelName == Config.CarModel then
+        if Config.Debug then print("Car correct: " .. modelName) end
+        return true
+    else
+        if Config.Debug then print("Car incorrect") end
+        return false
+    end
+end
+
+local function CheckItems()
+    return lib.callback.await('tiz_meth:server:checkIngredients', false)
+end
 -- Keybinds for adding ingredients and adjusting temperature
 createKeybind('lithium', 'Add Lithium', 'A', function()
     if started then
