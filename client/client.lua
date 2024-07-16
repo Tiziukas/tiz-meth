@@ -29,12 +29,14 @@ AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
     loadParticleEffect("core")
     SetPtfxAssetNextCall("core")
     if bool then
+        if Config.Debug then print("Smoke Started") end
         smoke = StartParticleFxLoopedAtCoord(Config.SmokeColour, posx, posy, posz + Config.Particle.posZ, Config.Particle.xRot, Config.Particle.yRot, Config.Particle.zRot, Config.Particle.scale, false, false, false, false)
         SetParticleFxLoopedAlpha(smoke, 0.8)
         SetParticleFxLoopedColour(smoke, 0.0, 0.0, 0.0, 0)
         Citizen.Wait(Config.ox_libTimer)
         StopParticleFxLooped(smoke, 0)
     else
+        if Config.Debug then print("Smoke stopped") end
         StopParticleFxLooped(smoke, 0)
     end
 end)
@@ -48,8 +50,10 @@ local function UseGasMask(var)
     RemoveAnimDict(animdict)
     Wait(260)
     if var then
+        if Config.Debug then print("Gas mask on") end
         SetPedComponentVariation(playerped, 1, Config.GasMaskNumber, 0, 1)
     else
+        if Config.Debug then print("Gas mask off") end
         SetPedComponentVariation(playerped, 1, 0, 0, 1)
     end
 end
@@ -74,6 +78,7 @@ end
 
 local function getPlayerZone()
     local coords = GetEntityCoords(PlayerPedId())
+    if Config.Debug then print("Player is in this zone: " .. GetNameOfZone(coords.x, coords.y, coords.z)) end
     return GetNameOfZone(coords.x, coords.y, coords.z)
 end
 
@@ -81,9 +86,11 @@ end
 local function isAllowedZone(zone)
     for _, z in ipairs(Config.AllowedZones) do
         if z == zone then
+            if Config.Debug then print("Zone is allowed: " ..zone) end
             return true
         end
     end
+    if Config.Debug then print("Zone is not allowed: " ..zone) end
     return false
 end
 -- Helper function to create keybinds
