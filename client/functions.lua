@@ -68,3 +68,20 @@ function CallDispatch()
         --        
     end
 end
+
+function getPlayerZone()
+    local jugador = PlayerPedId()
+    local coords = GetEntityCoords(jugador)
+    local zone = GetNameOfZone(coords.x, coords.y, coords.z)
+    return zone
+end
+
+
+function isAllowedZone(zone)
+    for _, z in ipairs(Config.AllowedZones) do
+        if z == zone then
+            return true
+        end
+    end
+    return false
+end

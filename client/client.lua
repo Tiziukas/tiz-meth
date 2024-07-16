@@ -13,6 +13,7 @@ local API_ProgressBar
 if Config.ProgBar == 'clm' then
     API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
 end
+
 local function loadParticleEffect(asset)
     if not HasNamedPtfxAssetLoaded(asset) then
         RequestNamedPtfxAsset(asset)
@@ -21,6 +22,7 @@ local function loadParticleEffect(asset)
         end
     end
 end
+
 RegisterNetEvent('tiz_meth:client:smoke')
 AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
     loadParticleEffect("core")
@@ -35,6 +37,7 @@ AddEventHandler('tiz_meth:client:smoke', function(posx, posy, posz, bool)
         StopParticleFxLooped(smoke, 0)
     end
 end)
+
 local function UseGasMask(var)
     local animdict = 'mp_masks@on_foot'
     local animname = 'put_on_mask'
@@ -134,6 +137,7 @@ end
 local function CheckItems()
     return lib.callback.await('tiz_meth:server:checkIngredients', false)
 end
+
 -- Keybinds for adding ingredients and adjusting temperature
 createKeybind('lithium', 'Add Lithium', 'A', function()
     if started then
@@ -189,11 +193,22 @@ end)
 createKeybind('startmeth', 'Start the meth cooking process', 'E', function()
     if incar then
         if not started then
+            if Config.OnlyAllowedZones then
+            local actualZone = getPlayerZone()
+            if isAllowedZone(actualZone) then
+                Wait(300)
+                lib.hideTextUI()
+                lib.callback.await("tiz_meth:server:cookthisbitchup", false)
+            else
+                lib.notify({ title = Config.Language.zoneErrorTitle, description = Config.Language.zoneErrorDescription, type = 'error' })
+            end
+        else
             Wait(300)
             lib.hideTextUI()
             lib.callback.await("tiz_meth:server:cookthisbitchup", false)
         end
     end
+end
 end)
 
 lib.onCache('seat', function(seat)
@@ -329,6 +344,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
     if Config.CamEnable then
         toggleCam(true)
     end
+
     Citizen.CreateThread(function()
         while true do
             Citizen.Wait(10)
@@ -344,6 +360,7 @@ AddEventHandler('tiz-meth:client:startprod', function()
             end
         end
     end)
+    
     Citizen.CreateThread(function()
         while started do
             Citizen.Wait(0)
