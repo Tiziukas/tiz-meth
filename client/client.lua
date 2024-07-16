@@ -72,32 +72,20 @@ local function toggleCam(bool) -- Stole This from Daddy Randolio
     end
 end
 
-local function resetValues()
-    temp = 100
-    lithium = 0
-    acetone = 0
-    acid = 0
-    qual = 0
-    randomNumber = 15
-    lib.hideTextUI()
-    FreezeEntityPosition(CurrentVehicle, false)
-    lib.callback.await("tiz_meth:server:awaitsmoke", false, GetEntityCoords(PlayerPedId()), false)
-    smoke = nil
-    if IsVehicleSeatFree(CurrentVehicle, -1) then
-        SetPedIntoVehicle(PlayerPedId(), CurrentVehicle, -1)
-    end
-    if Config.ProgBar == 'clm' then
-        API_ProgressBar.clear()
-    end
-    if Config.PutOnGasMask then
-        UseGasMask(false)
-    end
-    if Config.CamEnable then
-        toggleCam(false)
-    end
-    if Config.Debug then print("Values reset") end
+local function getPlayerZone()
+    local coords = GetEntityCoords(PlayerPedId())
+    return GetNameOfZone(coords.x, coords.y, coords.z)
 end
 
+
+local function isAllowedZone(zone)
+    for _, z in ipairs(Config.AllowedZones) do
+        if z == zone then
+            return true
+        end
+    end
+    return false
+end
 -- Helper function to create keybinds
 local function createKeybind(name, description, defaultKey, callback)
     return lib.addKeybind({
@@ -136,6 +124,32 @@ end
 
 local function CheckItems()
     return lib.callback.await('tiz_meth:server:checkIngredients', false)
+end
+
+local function resetValues()
+    temp = 100
+    lithium = 0
+    acetone = 0
+    acid = 0
+    qual = 0
+    randomNumber = 15
+    lib.hideTextUI()
+    FreezeEntityPosition(CurrentVehicle, false)
+    lib.callback.await("tiz_meth:server:awaitsmoke", false, GetEntityCoords(PlayerPedId()), false)
+    smoke = nil
+    if IsVehicleSeatFree(CurrentVehicle, -1) then
+        SetPedIntoVehicle(PlayerPedId(), CurrentVehicle, -1)
+    end
+    if Config.ProgBar == 'clm' then
+        API_ProgressBar.clear()
+    end
+    if Config.PutOnGasMask then
+        UseGasMask(false)
+    end
+    if Config.CamEnable then
+        toggleCam(false)
+    end
+    if Config.Debug then print("Values reset") end
 end
 
 -- Keybinds for adding ingredients and adjusting temperature
