@@ -70,10 +70,8 @@ function CallDispatch()
 end
 
 function getPlayerZone()
-    local jugador = PlayerPedId()
-    local coords = GetEntityCoords(jugador)
-    local zone = GetNameOfZone(coords.x, coords.y, coords.z)
-    return zone
+    local coords = GetEntityCoords(PlayerPedId())
+    return GetNameOfZone(coords.x, coords.y, coords.z)
 end
 
 

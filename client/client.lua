@@ -9,6 +9,7 @@ local smoke = nil
 local incar = false
 local randomNumber = 15
 local API_ProgressBar
+local cam
 
 if Config.ProgBar == 'clm' then
     API_ProgressBar = exports["clm_ProgressBar"]:GetAPI()
@@ -53,6 +54,24 @@ local function UseGasMask(var)
     end
 end
 
+local function toggleCam(bool) -- Stole This from Daddy Randolio
+    if bool then
+        local coords = GetEntityCoords(cache.ped)
+        local x, y, z = coords.x + GetEntityForwardX(cache.ped) * 0.9, coords.y + GetEntityForwardY(cache.ped) * 0.9, coords.z + 0.92
+        local rot = GetEntityRotation(cache.ped, 2)
+        local camRotation = rot + vec3(0.0, 0.0, 175.0)
+        cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', x, y, z, camRotation, 70.0)
+        SetCamActive(cam, true)
+        RenderScriptCams(true, true, 1000, 1, 1)
+    else
+        if cam then
+            RenderScriptCams(false, true, 0, true, false)
+            DestroyCam(cam, false)
+            cam = nil
+        end
+    end
+end
+
 local function resetValues()
     temp = 100
     lithium = 0
@@ -87,25 +106,6 @@ local function createKeybind(name, description, defaultKey, callback)
         defaultKey = defaultKey,
         onPressed = callback
     })
-end
-
-local cam 
-local function toggleCam(bool) -- Stole This from Daddy Randolio
-    if bool then
-        local coords = GetEntityCoords(cache.ped)
-        local x, y, z = coords.x + GetEntityForwardX(cache.ped) * 0.9, coords.y + GetEntityForwardY(cache.ped) * 0.9, coords.z + 0.92
-        local rot = GetEntityRotation(cache.ped, 2)
-        local camRotation = rot + vec3(0.0, 0.0, 175.0)
-        cam = CreateCamWithParams('DEFAULT_SCRIPTED_CAMERA', x, y, z, camRotation, 70.0)
-        SetCamActive(cam, true)
-        RenderScriptCams(true, true, 1000, 1, 1)
-    else
-        if cam then
-            RenderScriptCams(false, true, 0, true, false)
-            DestroyCam(cam, false)
-            cam = nil
-        end
-    end
 end
 
 -- Function to generate a random number ending in 5 or 0
@@ -194,21 +194,20 @@ createKeybind('startmeth', 'Start the meth cooking process', 'E', function()
     if incar then
         if not started then
             if Config.OnlyAllowedZones then
-            local actualZone = getPlayerZone()
-            if isAllowedZone(actualZone) then
+                if isAllowedZone(getPlayerZone()) then
+                    Wait(300)
+                    lib.hideTextUI()
+                    lib.callback.await("tiz_meth:server:cookthisbitchup", false)
+                else
+                    lib.notify({ title = Config.Language.zoneErrorTitle, description = Config.Language.zoneErrorDescription, type = 'error' })
+                end
+            else
                 Wait(300)
                 lib.hideTextUI()
                 lib.callback.await("tiz_meth:server:cookthisbitchup", false)
-            else
-                lib.notify({ title = Config.Language.zoneErrorTitle, description = Config.Language.zoneErrorDescription, type = 'error' })
             end
-        else
-            Wait(300)
-            lib.hideTextUI()
-            lib.callback.await("tiz_meth:server:cookthisbitchup", false)
         end
     end
-end
 end)
 
 lib.onCache('seat', function(seat)
