@@ -2,6 +2,8 @@ Config = {}
 
 Config.CarModel = 'JOURNEY' -- May not work with all vehicles, I think it pulls this from maybe vehicle.meta ??
 
+Config.OnlyAllowedZones = true -- Change to true to enable checking the zone where the Journey is while cooking meth. | DONT FORGET TO ADD YOUR ZONES ON LINE 103
+
 Config.Debug = false
 
 Config.ItemNames = {
@@ -34,7 +36,7 @@ Config.highQualRecipe = {
     acetone = 8
 }
 
-Config.Dispatch = true -- cd_dispatch | rcore_dispatch | qs-dispatch are all automatically found else integrate your own in functions.lua
+Config.Dispatch = false -- cd_dispatch | rcore_dispatch | qs-dispatch are all automatically found else integrate your own in functions.lua
 Config.PoliceJob = {'police', 'penis'}
 Config.DispatchBlip = {
     sprite = 431,
@@ -50,7 +52,7 @@ Config.GasMaskNumber = 46
 
 Config.Inventory = 'ox' -- 'ox' = ox_inventory | 'qs' = qs-inventory | 'qb' = qb_inventory
 
-Config.ProgBar = 'clm' -- 'clm' or 'ox_bar' or 'ox_circle'
+Config.ProgBar = 'ox_circle' -- 'clm' or 'ox_bar' or 'ox_circle'
 
 Config.ox_libTimer = 60000 -- Configure length if you are using ox_lib above
 Config.TickLength = 1000 -- Only use if you are using the clm progbar | How often 0.01 adds to the progbar | In theory, increasing the tick lenght will make you cook longer.
@@ -93,5 +95,13 @@ Config.Language = {
     decreaseTempMsg = 'Decrease temperature',
     addLithium = 'Add lithium',
     addAcetone = 'Add acetone',
-    addAcid = 'Add sulfuric acid'
+    addAcid = 'Add sulfuric acid',
+    zoneErrorTitle = 'You cant do that here',
+    zoneErrorDescription = 'Move somewhere more private to start cooking'
+}
+
+Config.AllowedZones = { -- https://docs.fivem.net/natives/?_0xCD90657D4C30E1CA | You may want to add your zones since these ones are just examples.
+    "AIRP",
+    "ALAMO",
+    "ALTA"
 }
