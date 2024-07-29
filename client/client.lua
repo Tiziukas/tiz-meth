@@ -140,6 +140,7 @@ local function resetValues()
     acid = 0
     qual = 0
     randomNumber = 15
+    incar = false
     lib.hideTextUI()
     FreezeEntityPosition(CurrentVehicle, false)
     lib.callback.await("tiz_meth:server:awaitsmoke", false, GetEntityCoords(PlayerPedId()), false)
